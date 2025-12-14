@@ -8,17 +8,23 @@ import {
 import { RepositoryItem } from '../interfaces/RepositoryItem';
 
 
-const RepoItem: React.FC<RepositoryItem> = ({ name, description, imageUrl, owner, language }) => {
+const RepoItem: React.FC<{repo: RepositoryItem}> = ({ repo }) => {
   return (
     <IonItem>
         <IonThumbnail slot="start">
-            <img alt="Silhouette of mountains" src={imageUrl || "https://ionicframework.com/docs/img/demos/thumbnail.svg"} />
+            <img alt="Silhouette of mountains" src={repo.imageUrl || "https://ionicframework.com/docs/img/demos/thumbnail.svg"} />
         </IonThumbnail>
         <IonLabel>
-          <h2>{name}</h2>
-          <p>{description}</p>
-          <p>Propietario: {owner}</p>
-          <p>Lenguaje: {language}</p>
+          <h2>{repo.name}</h2>
+          <p>{repo.description}</p>
+          <p>
+            <strong>Propietario: </strong>
+            {repo.owner}
+          </p>
+          <p>
+            <strong>Lenguaje: </strong>
+            {repo.language}
+          </p>
         </IonLabel>
     </IonItem>
   );
