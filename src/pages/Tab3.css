@@ -1,15 +1,14 @@
-/* Centrado vertical y espaciado entre campos */
 .card-container {
 	min-height: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	gap: 16px; /* Espaciado entre ion-input y textarea */
-	padding: 16px; /* Margen interior del contenedor */
+	gap: 16px; 
+	padding: 16px; 
 }
 
 .card{
 	width: 100%;
-	max-width: 640px; /* Limita el ancho para mejor lectura */
+	max-width: 640px; 
 }
