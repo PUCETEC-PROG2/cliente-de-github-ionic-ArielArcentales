@@ -5,10 +5,7 @@ import { UserInfo } from "../interfaces/UserInfo";
 const GITHUB_API_URL = import.meta.env.VITE_GITHUB_API_URL || "https://api.github.com";
 const GITHUB_API_TOKEN = import.meta.env.VITE_GITHUB_API_TOKEN || "";
 
-/**
- * Obtener repositorios del usuario autenticado
- * @returns Repositorios del usuario
- */
+
 export const fetchRepositories = async (): Promise<RepositoryItem[]> => {
   try {
     const response = await axios.get(`${GITHUB_API_URL}/user/repos`, {
@@ -38,11 +35,8 @@ export const fetchRepositories = async (): Promise<RepositoryItem[]> => {
   }
 };
 
-/**
- * Crear repositorios
- * @param repo 
- */
-export const createRepository = async (repo : RepositoryItem): Promise<void> => {
+
+export const createRepository = async (repo: RepositoryItem): Promise<void> => {
   try {
     const response = await axios.post(`${GITHUB_API_URL}/user/repos`, repo, {
       headers: {
@@ -52,8 +46,10 @@ export const createRepository = async (repo : RepositoryItem): Promise<void> => 
     console.log("Repositorio ingresado ", response.data);
   } catch (error) {
     console.error("Error creating repository:", error);
+    throw error; // Es bueno lanzar el error para manejarlo en la vista
   }
 };
+
 
 export const getUserInfo = async (): Promise<UserInfo | null> => {
   try {
@@ -66,5 +62,40 @@ export const getUserInfo = async (): Promise<UserInfo | null> => {
   } catch (error) {
     console.error("Error fetching user info:", error);
     return null;
+  }
+};
+
+// --- NUEVAS FUNCIONES AGREGADAS ---
+
+export const updateRepository = async (owner: string, repoName: string, data: Partial<RepositoryItem>): Promise<boolean> => {
+  try {
+    const response = await axios.patch(`${GITHUB_API_URL}/repos/${owner}/${repoName}`, data, {
+      headers: {
+        Authorization: `Bearer ${GITHUB_API_TOKEN}`,
+        Accept: "application/vnd.github.v3+json",
+      }
+    });
+    console.log("Repositorio actualizado:", response.data);
+    return true;
+  } catch (error) {
+    console.error("Error updating repository:", error);
+    return false;
+  }
+};
+
+
+export const deleteRepository = async (owner: string, repoName: string): Promise<boolean> => {
+  try {
+    await axios.delete(`${GITHUB_API_URL}/repos/${owner}/${repoName}`, {
+      headers: {
+        Authorization: `Bearer ${GITHUB_API_TOKEN}`,
+        Accept: "application/vnd.github.v3+json",
+      },
+    });
+    console.log(`Repositorio ${repoName} eliminado correctamente.`);
+    return true;
+  } catch (error) {
+    console.error("Error deleting repository:", error);
+    return false;
   }
 };
